@@ -20,7 +20,7 @@ async function main() {
   // deploy a process with  a bpmn
   // try{
   //   const res = await zbc.deployProcess(
-  //     path.join(process.cwd(), 'bpmn', 'c8-sdk-third.bpmn')
+  //     path.join(process.cwd(), 'bpmn', 'c8-sdk-fourth.bpmn')
   //   );
   //   log(`Deployed process ${JSON.stringify(res, null, 2)}`);
 
@@ -33,7 +33,7 @@ async function main() {
   // start a new process
   try {
     const p = await zbc.createProcessInstance({
-      bpmnProcessId: "c8-sdk-third",
+      bpmnProcessId: "c8-sdk-fourth",
       variables: {
         patientId: "p-100",
         humanTaskStatus: "not done",
@@ -52,28 +52,28 @@ async function main() {
   }
 
   // ---------------------------------------------------------------------------------------
-
+  
   //claim human task
   console.log(`Starting human task poller...`);
-
+  
   //long polling with interval 3000 to get task list
   setInterval(async () => {
     const log = getLogger("Tasklist", chalk.yellowBright);
-
+    
     let taskListRes;
     let taskClaimed;
-
+    
     //get task list
     try {
       taskListRes = await tasklist.getTasks({
         state: Tasklist.TaskState.CREATED,
       });
-
+      
       log(`tasklist full ${JSON.stringify(taskListRes, null, 2)}`);
     } catch (err) {
       log(`getTasks error ${JSON.stringify(err, null, 2)}`);
     }
-
+    
     //do this if tasks were present
     if (taskListRes && taskListRes.tasks.length > 0) {
       log(`fetched ${taskListRes.tasks.length} human tasks`);
@@ -81,23 +81,23 @@ async function main() {
       //looping tasklist
       taskListRes.tasks.forEach(async (task) => {
         log(`tasklist each ${JSON.stringify(task, null, 2)}`);
-
+        
         log(`claiming task ${task.id} from process ${task.processInstanceId}`);
-
+        
         //claiming task
         try {
           let { claimTask } = await tasklist.claimTask(
             task.id,
             "demo-bot human-task-completer",
             true
-          );
-
-          taskClaimed = claimTask;
-          taskClaimed &&
+            );
+            
+            taskClaimed = claimTask;
+            taskClaimed &&
             log(
               `servicing human task ${JSON.stringify(taskClaimed, null, 2)}`
-            );
-        } catch (err) {
+              );
+            } catch (err) {
           log(`claimTask error ${JSON.stringify(err, null, 2)}`);
           console.log(err);
         }
@@ -106,22 +106,33 @@ async function main() {
         try {
           // console.log(`completing task for ${JSON.stringify(taskClaimed, null, 2)}`);
           (await taskClaimed) &&
-            tasklist.completeTask(taskClaimed.id, {
-              humanTaskStatus: "Got done",
-            });
+          tasklist.completeTask(taskClaimed.id, {
+            humanTaskStatus: "Got done",
+            hasCovid : "yes",
+            isAdult : "yes",
+            // hasBeenQuarantined : "no" //output will be has covid
+            hasBeenQuarantined : "yes" //output will be does not have covid
+          });
+
         } catch (error) {
           log(
             `error while checking task list complete ${JSON.stringify(
               error,
               null,
               2
-            )}`
-          );
+              )}`
+              );
+            }
+          });
+        } else {
+          log("No human tasks found");
         }
-      });
-    } else {
-      log("No human tasks found");
-    }
+        
+// ---------------------------------------------------------------------------------------
+
+    //decision making
+
+    
   }, 3000);
 }
 
