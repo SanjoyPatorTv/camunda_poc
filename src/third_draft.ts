@@ -56,7 +56,7 @@ async function main() {
   //claim human task
   console.log(`Starting human task poller...`);
 
-  //long polling with interval 3000 to get task list
+  //long polling with interval 5000 to get task list
   setInterval(async () => {
     const log = getLogger("Tasklist", chalk.yellowBright);
 
