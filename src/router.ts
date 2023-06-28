@@ -76,8 +76,8 @@ router.post(
 
 router.post(
   "/service/restapi",
-  body("resVariables").exists().isObject(),
-  handleInputErrors,
+  // body("resVariables").exists().isObject(),
+  // handleInputErrors,
   serviceRestApiPost
 );
 

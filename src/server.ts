@@ -26,11 +26,14 @@ app.use('/api',  router)
 
 // to handle async error
 app.use((err, req, res,next) => {
+  console.log("err")
+  console.log(err)
   if(err.type === 'auth'){
     res.status(401).json({message: 'unauthorized'})
   }else if(err.type === 'input'){
     res.status(400).json({message: 'invalid input'})
-  }else{
+  }
+  else{
     console.log("error in server ")
     console.log(err)
     res.status(500).json({message: 'oops, thats on us'})
