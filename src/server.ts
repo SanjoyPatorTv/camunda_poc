@@ -31,6 +31,8 @@ app.use((err, req, res,next) => {
   }else if(err.type === 'input'){
     res.status(400).json({message: 'invalid input'})
   }else{
+    console.log("error in server ")
+    console.log(err)
     res.status(500).json({message: 'oops, thats on us'})
   }
 })
