@@ -15,7 +15,6 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(customLogger("Hello from custom world"))
 
 //protect only applies to this and not the others
 // app.use('/api',protect,  router)

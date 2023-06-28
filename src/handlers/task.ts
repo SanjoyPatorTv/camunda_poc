@@ -29,6 +29,26 @@ export const getAllTasks = async (req, res, next) => {
   }
 };
 
+//get all task list (GET) - no params,
+export const getTask = async (req, res, next) => {
+  const taskId = req.params.id;
+
+  log(`Getting task with id: ${taskId}`)
+
+  try {
+    const taskRes = await tasklist.getTask(
+      taskId
+    );
+    log(`Get Task by Id ${JSON.stringify(taskRes, null, 2)}`);
+    //same as res.json({token : token})
+    res.json({ taskRes });
+  } catch (error: any) {
+    error.type = "task-error";
+    log(`Get Task by Id failed :  ${JSON.stringify(error, null, 2)}`);
+    next(error);
+  }
+};
+
 // claim a task with task id (POST) - { taskId, assigneeName }
 export const claimTask = async (req, res, next) => {
   const taskId = req.body.taskId;
@@ -39,7 +59,7 @@ export const claimTask = async (req, res, next) => {
   try {
     let { claimTask } = await tasklist.claimTask(taskId, assigneeName, true);
 
-    log(`Claimed task successful ${claimTask}`);
+    log(`Claimed task successful :  ${JSON.stringify(claimTask, null, 2)}`);
     //same as res.json({token : token})
     res.json({ claimTask });
   } catch (error: any) {

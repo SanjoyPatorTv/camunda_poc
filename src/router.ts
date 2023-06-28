@@ -17,7 +17,7 @@ router.get("/health", healthCheck);
  * process
  */
 
-//deploy a process with  a bpmn -  (POST) - {bpmnFileName}
+//deploy a process model with  a bpmn -  (POST) - {bpmnFileName}
 router.post(
   "/process/deploy",
   body("bpmnFileName").exists().isString(),
@@ -25,19 +25,19 @@ router.post(
   deployProcess
 );
 
-// create a new process - (POST) - {bpmnProcessId, optional:  initialVariables }
+// Create a new process instance - (POST) - {bpmnProcessId, optional:  initialVariables }
 router.post(
   "/process/create",
   body("bpmnProcessId").exists().isString(),
   body("initialVariables").exists().isObject(),
+  body("versionId").optional().isString(),
   handleInputErrors,
   createProcess,
 );
 
 // get the XML diagram of the process - (POST) -  { processDefinitionKey }
-router.post(
-  "/process/xml",
-  body("processDefinitionKey").exists().isString(),
+router.get(
+  "/process/xml/:processDefinitionKey",
   handleInputErrors,
   getProcessDefinitionXML,
 );
@@ -49,7 +49,8 @@ router.post(
 //get all task list (GET) - no params,
 router.get("/task", getAllTasks);
 
-//TODO : make get a task details route later
+//get a task by id (GET) - id params,
+router.get("/task/:id", getAllTasks);
 
 // claim a task with task id (POST) - { taskId, assigneeName }
 router.post(

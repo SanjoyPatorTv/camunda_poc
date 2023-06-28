@@ -12,7 +12,7 @@ const getLogger = (prefix: string, color: chalk.Chalk) => (msg: string) =>
   console.log(color(`[${prefix}] ${msg}`));
 const log = getLogger("Process handler : ", chalk.greenBright);
 
-// deploy a process with  a bpmn -  (POST) - {bpmnFileName}
+// deploy a process model with  a bpmn -  (POST) - {bpmnFileName}
 export const deployProcess = async (req, res, next) => {
   const bpmnFileName = req.body.bpmnFileName;
   log(`Deploying process with bpmn : ${bpmnFileName}`);
@@ -37,7 +37,7 @@ export const deployProcess = async (req, res, next) => {
   }
 };
 
-// create a new process - (POST) - {bpmnProcessId, optional:  initialVariables }
+// Create a new process instance - (POST) - {bpmnProcessId, optional:  initialVariables }
 export const createProcess = async (req, res, next) => {
   const bpmnProcessId = req.body.bpmnProcessId;
   const initialVariables = req.body.initialVariables;
@@ -70,7 +70,7 @@ export const createProcess = async (req, res, next) => {
 
 // get the XML diagram of the process - (POST) -  { processDefinitionKey }
 export const getProcessDefinitionXML = async (req, res, next) => {
-  const processDefinitionKey = req.body.processDefinitionKey;
+  const processDefinitionKey = req.params.processDefinitionKey;
 
   log(`Getting Process Definition XML with ${processDefinitionKey}`)
 
