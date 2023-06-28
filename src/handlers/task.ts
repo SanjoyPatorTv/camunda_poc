@@ -74,7 +74,7 @@ export const completeTask = async (req, res, next) => {
   const taskId = req.body.taskId;
   const taskVariables = req.body.taskVariables;
 
-  log(`Completing task : ${taskId} with task variables ${taskVariables}`);
+  log(`Completing task : ${taskId} with task variables ${JSON.stringify(taskVariables, null, 2)}`);
 
   // TODO: check if task is already completed
 

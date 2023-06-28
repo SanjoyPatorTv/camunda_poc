@@ -24,14 +24,15 @@ export const healthCheck = async (req, res, next) => {
 
 // acknowledge covid assessment result -> POST - variables in body 
 export const serviceRestApiPost = async (req, res, next) => {
-    const resVariablesResult = req.body.resVariables;
+    console.log(req.body, req.query, req.params);
+    // const resVariablesResult = req.body.resVariables;
 
-    log(`covid assessment result: ${resVariablesResult}`)
+    // log(`covid assessment result: ${JSON.stringify(resVariablesResult, null, 2)}`)
 
-    resVariablesResult.message = "got covid assessment result - backend"
+    // resVariablesResult.message = "got covid assessment result - backend"
 
     //append acknowledgement of receiving message
     res.json({
-        resVariablesResult
+        'work': 'done'
     })
 };
