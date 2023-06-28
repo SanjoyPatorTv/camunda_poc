@@ -1,5 +1,5 @@
 import { C8, Tasklist } from "camunda-8-sdk";
-import { createProcessObjModel } from "../../models/bpmnModel";
+import { createProcessObjModel } from "../models/bpmnModel";
 import chalk from "chalk";
 import * as path from "path";
 const zbc = new C8.ZBClient();
