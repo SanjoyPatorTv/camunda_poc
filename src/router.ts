@@ -2,8 +2,9 @@ import { Router } from "express";
 import { body, oneOf } from "express-validator";
 import { handleInputErrors } from "./modules/middleware";
 import { healthCheck, serviceRestApiPost } from "./handlers/service";
-import { createProcess, deployProcess, getProcessDefinitionXML } from "./handlers/process";
+import { createProcess, deployProcess } from "./handlers/process";
 import { claimTask, completeTask, getAllTasks } from "./handlers/task";
+import { getAllProcessInstancesDetails, getFlowNodeInstance, getProcessDefinitionXML, getProcessInstanceSequenceFlows, getProcessInstanceStatistics, getProcessInstancesDetails, getVariablesForProcess } from "./handlers/operate";
 
 const router = Router();
 
@@ -35,12 +36,60 @@ router.post(
   createProcess,
 );
 
+/**
+ * operate
+ */
+
 // get the XML diagram of the process - (POST) -  { processDefinitionKey }
 router.get(
-  "/process/xml/:processDefinitionKey",
+  "/operate/xml/:processDefinitionKey",
   handleInputErrors,
   getProcessDefinitionXML,
 );
+
+// get all process instances details- (GET) -  {  }
+router.get(
+  "/operate/processes",
+  handleInputErrors,
+  getAllProcessInstancesDetails,
+);
+
+// get the process instances details- (GET) -  { key }
+router.get(
+  "/operate/process/:key",
+  handleInputErrors,
+  getProcessInstancesDetails,
+);
+
+// get the flow node instances details- (GET) -  { key }
+router.get(
+  "/operate/nodes/:key",
+  handleInputErrors,
+  getFlowNodeInstance,
+);
+
+// get the process instance statistics details- (GET) -  { key }
+router.get(
+  "/operate/processstats/:key",
+  handleInputErrors,
+  getProcessInstanceStatistics,
+);
+
+// get Variables for Process- (GET) -  { key }
+router.get(
+  "/operate/variables/:key",
+  handleInputErrors,
+  getVariablesForProcess,
+);
+
+// get Process Instance Sequence Flows- (GET) -  { key }
+router.get(
+  "/operate/sequenceflows/:key",
+  handleInputErrors,
+  getProcessInstanceSequenceFlows,
+);
+
+
 
 /**
  * tasks

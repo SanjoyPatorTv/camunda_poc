@@ -68,22 +68,4 @@ export const createProcess = async (req, res, next) => {
   }
 };
 
-// get the XML diagram of the process - (POST) -  { processDefinitionKey }
-export const getProcessDefinitionXML = async (req, res, next) => {
-  const processDefinitionKey = req.params.processDefinitionKey;
 
-  log(`Getting Process Definition XML with ${processDefinitionKey}`)
-
-  try {
-    const processDefinitionXMLRes = await operate.getProcessDefinitionXML(
-      parseInt(processDefinitionKey, 10)
-    );
-    log(chalk.redBright("\n[Operate] BPMN XML:", processDefinitionXMLRes));
-    //same as res.json({token : token})
-    res.json({ processDefinitionXMLRes });
-  } catch (error: any) {
-    error.type = "process-error";
-    log(`Get Process Definition XML failed :  ${JSON.stringify(error, null, 2)}`);
-    next(error);
-  }
-};
